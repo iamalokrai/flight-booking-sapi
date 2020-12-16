@@ -1,0 +1,19 @@
+http:
+  port: "8081"
+  timeout: "40000"
+  path: "/sys/*"
+    
+autoDiscovery:
+  id: "16528219"
+  
+    
+db:
+  host: "34.70.37.65"
+  port: "3306"
+  user: "mulesoft_poc_user"
+  database: "mulesoft_database"
+  
+cb:
+  threshold: "3"
+  timeout:  "300000"
+  name: "Circuit Breaker"

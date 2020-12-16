@@ -1,0 +1,9 @@
+{
+  "departure_date":"2020/12/26",
+  "plane_type":"Boeing 737",
+  "seat_number":"1A",
+  "passanger_name":"Alok Rai",
+  "price":"799",
+  "origin":"CLE",
+  "destination":"SFO"
+}

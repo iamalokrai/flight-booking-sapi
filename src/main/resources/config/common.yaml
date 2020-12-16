@@ -1,0 +1,6 @@
+api:
+  name: "flight-booking-sapi"
+  version: "1.0.0"
+  availability:
+    message: "Up"
+    status: "API is up and running"

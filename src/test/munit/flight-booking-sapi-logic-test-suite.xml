@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:munit="http://www.mulesoft.org/schema/mule/munit"
+	xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<munit:config name="flight-booking-sapi-logic-test-suite.xml" />
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="4adae9ec-72b0-4bec-af87-6dc133a50f9c" basePath="/sys">
+		<http:request-connection host="localhost" port="8081" />
+	</http:request-config>
+	<munit:test name="DELETE-booking-success" doc:id="628148c7-fce1-4078-98b4-02f20238bd27" description="Test">
+		<munit:behavior >
+			<munit:set-event doc:name="Set Event" doc:id="f98d7fc1-2099-408d-bb1e-89b793185f98">
+				<munit:attributes value="#[
+		'queryParams': {
+				'PNR': '123'
+}]" />
+			</munit:set-event>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="79d158ed-7d93-4192-adfc-757d341597a0" processor="db:delete">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Delete" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="e9c4f8d5-e929-4c89-9232-21aec7a3cad4" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to delete:\bookings:flight-booking-sapi-config" doc:id="27401dcf-8522-4810-b1c5-1f43fed9a30e" name="delete:\bookings:flight-booking-sapi-config"/>
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:verify-call doc:name="Verify call" doc:id="e6c8aefb-faf5-40dc-857c-e5bcf2c8d48c" processor="json-logger:logger">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Success Logger" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="46eca187-2584-42b5-9d05-07529ef093a3" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="GET-booking-Success" doc:id="d17580f8-68af-4b89-affb-b0d12a344212" description="Test">
+		<munit:behavior >
+			<munit:set-event doc:name="Set Event" doc:id="6df3482a-f8ef-48e4-808f-5c6d39ff7068" >
+				<munit:attributes value="#[
+		'queryParams': {
+				'PNR': '123'
+}]" />
+			</munit:set-event>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="97496aaf-dbb9-46cb-b485-7432f96e06ad" processor="db:select">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="0bd6b27c-4d4a-4fb7-b4ae-63644602b0fb" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#['[
+  {
+    &quot;passanger_name&quot;: &quot;Alok Rai&quot;,
+    &quot;pnr&quot;: &quot;p02f3wBp&quot;,
+    &quot;seat_number&quot;: &quot;1A&quot;,
+    &quot;price&quot;: &quot;799&quot;,
+    &quot;departure_date&quot;: &quot;2020/12/26&quot;,
+    &quot;plane_type&quot;: &quot;Boeing 737&quot;,
+    &quot;origin&quot;: &quot;CLE&quot;,
+    &quot;destination&quot;: &quot;SFO&quot;
+  }
+]']" mediaType="application/json" encoding="UTF-8" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to get:\bookings:flight-booking-sapi-config" doc:id="759407a8-1b08-4c3e-8ba0-bbbdbcfd81be" name="get:\bookings:flight-booking-sapi-config"/>
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:verify-call doc:name="Verify call" doc:id="681c4145-b205-4ada-94ed-bc5968515a6e" processor="json-logger:logger">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Success Logger" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="ae0f5f5f-d78a-4ce1-abff-d20f09e84c92" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="GET-booking-NOT_FOUND" doc:id="62a78361-5e81-48a2-9d98-60789d3d2278" description="Test">
+		<munit:behavior >
+			<munit:set-event doc:name="Set Event" doc:id="0edbd023-dd91-4a2c-a90d-635a1241c374" >
+				<munit:attributes value="#[
+		'queryParams': {
+				'PNR': '123'
+}]" />
+			</munit:set-event>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="0660ca51-9541-45e9-bd8d-b4a323989d19" processor="db:select">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="0bd6b27c-4d4a-4fb7-b4ae-63644602b0fb" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[MunitTools::getResourceAsString('db-response-not-found.json')]" mediaType="application/json" encoding="UTF-8" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to get:\bookings:flight-booking-sapi-config" doc:id="8ebefc50-f622-42be-ba86-411a64641798" name="get:\bookings:flight-booking-sapi-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call" doc:id="783e1e51-62f2-4452-9943-ead0182caa41" processor="json-logger:logger">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="967433c9-a1e7-4a8a-80c8-d3eb6e0a14eb" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="POST-booking-Success" doc:id="c05de9a7-cfb6-48f3-b4ff-57f37c8cd817" description="Test">
+		<munit:behavior >
+			<munit:set-event doc:name="Set Event" doc:id="8f2991b5-6454-46cb-b5fc-59d210ff58fd" >
+				<munit:payload value="#['{
+  &quot;departure_date&quot;:&quot;2020/12/26&quot;,
+  &quot;plane_type&quot;:&quot;Boeing 737&quot;,
+  &quot;seat_number&quot;:&quot;1A&quot;,
+  &quot;passanger_name&quot;:&quot;Alok Rai&quot;,
+  &quot;price&quot;:&quot;799&quot;,
+  &quot;origin&quot;:&quot;CLE&quot;,
+  &quot;destination&quot;:&quot;SFO&quot;
+}']" encoding="UTF-8" mediaType="application/json" />
+			</munit:set-event>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="72b01099-3b52-4b89-995a-54263b47d076" processor="db:insert">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Insert" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="55afacc7-e237-48b5-a15c-66cf48b7cfd4" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to post:\bookings:application\json:flight-booking-sapi-config" doc:id="55f1e592-e9f1-4bc3-b707-f55f04641d4d" name="post:\bookings:application\json:flight-booking-sapi-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call" doc:id="3ed7a9c6-ca5d-4eda-975b-5be512821d94" processor="json-logger:logger">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="e71cc919-703f-4405-8353-3b4c8c546949" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="PUT-booking-Success" doc:id="a5ae88be-23d8-4346-a160-9c77fec87325" description="Test">
+		<munit:behavior >
+			<munit:set-event doc:name="Set Event" doc:id="cc9da02d-1164-418d-89a2-a69b3671aa63" >
+				<munit:payload value="#['{
+&quot;seat_number&quot;: &quot;3A&quot;,
+&quot;PNR&quot;: &quot;123455q&quot;,
+&quot;departure_date&quot;:&quot;2020-12-29&quot;
+}']" encoding="UTF-8" mediaType="application/json" />
+			</munit:set-event>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="481cc851-5f1a-412a-a013-64c2e83ffe35" processor="db:stored-procedure">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Stored procedure" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="ba68d3f6-5d74-4e55-a5c3-180fdb1ba2b0" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#['{
+  &quot;resultSet1&quot;: [
+    {
+      &quot;pnr&quot;: &quot;123455&quot;
+    }
+  ],
+  &quot;updateCount1&quot;: 0,
+  &quot;out_pnr&quot;: null
+}']" mediaType="application/json" encoding="UTF-8" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to put:\bookings:application\json:flight-booking-sapi-config" doc:id="ee7a80c3-e01a-4300-83f0-a5e4c2779998" name="put:\bookings:application\json:flight-booking-sapi-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call" doc:id="549b4363-e4d8-489a-ae53-7d92722f04fd" processor="json-logger:logger">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="9f4fdd5a-3915-4161-a89d-05d404bfdf9d" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="PUT-booking-Not-Found" doc:id="216c99d1-ab4e-4748-8431-3177150f883f" description="Test">
+		<munit:behavior >
+			<munit:set-event doc:name="Set Event" doc:id="c46a380f-cff9-4996-8af2-9543f69c4991" >
+				<munit:payload value="#['{
+&quot;seat_number&quot;: &quot;3A&quot;,
+&quot;PNR&quot;: &quot;123455q&quot;,
+&quot;departure_date&quot;:&quot;2020-12-29&quot;
+}']" encoding="UTF-8" mediaType="application/json" />
+			</munit:set-event>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="e77c9c28-bbf5-4d71-b16c-df8a12f26fb3" processor="db:stored-procedure" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Stored procedure" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="ba68d3f6-5d74-4e55-a5c3-180fdb1ba2b0" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#['{
+  &quot;updateCount1&quot;: 0,
+  &quot;out_pnr&quot;: null
+}']" mediaType="application/json" encoding="UTF-8" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to put:\bookings:application\json:flight-booking-sapi-config" doc:id="dacca60a-9160-4a99-86b0-74f26940c407" name="put:\bookings:application\json:flight-booking-sapi-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call" doc:id="2b0d372f-0c7f-4722-99a1-1dda8921b857" processor="json-logger:logger">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="967433c9-a1e7-4a8a-80c8-d3eb6e0a14eb" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="APIKIT:BAD_REQUEST" doc:id="bffd88ca-230e-48e3-9006-ec4d0c9dd248" >
+		<munit:enable-flow-sources >
+			<munit:enable-flow-source value="flight-booking-sapi-main" />
+			<munit:enable-flow-source value="post:\bookings:application\json:flight-booking-sapi-config" />
+		</munit:enable-flow-sources>
+		<munit:execution >
+			<http:request method="POST" doc:name="Request" doc:id="deb94694-c81f-417e-a1df-92578fadc1aa" config-ref="HTTP_Request_configuration" path="/bookings">
+				<http:body ><![CDATA[#[output application/json ---
+{
+    "departure_date": "2020/12/26",
+    "plane_type": "Boeing 747",
+    "seat_number": "89A",
+    "passanger_name": "Omkar D",
+    "price": 399,
+    "origin": "ORD"
+}]]]></http:body>
+				<http:response-validator >
+					<http:success-status-code-validator values="#[400]"/>
+				</http:response-validator>
+			</http:request>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call" doc:id="f0ca7a6f-752f-4a5e-a1b0-0cfd12777c64" processor="logger">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Logger" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="77f86744-0e37-4d6e-9b29-78e989523467" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="APIKIT:METHOD_NOT_ALLOWED" doc:id="7da585b1-ff09-4412-b5ca-6704fc4f6daa" >
+		<munit:enable-flow-sources >
+			<munit:enable-flow-source value="flight-booking-sapi-main"/>
+		</munit:enable-flow-sources>
+		<munit:execution >
+			<http:request method="PATCH" doc:name="Request" doc:id="be94abcd-ec47-48ee-8643-a70fe41f88ab" config-ref="HTTP_Request_configuration" path="/bookings">
+				<http:response-validator >
+					<http:success-status-code-validator values="#[405]" />
+				</http:response-validator>
+			</http:request>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call" doc:id="66aa827e-2f66-489e-87b4-d3b718971c16" processor="json-logger:logger">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Logger" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="1fbc0a7f-a233-4e6d-a26b-bca6298e6e39" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="GET-booking-DB:CONNECTIVITY-Error" doc:id="e630d452-a8f7-453a-9701-e9487d646a27" description="Test" expectedErrorType="DB:CONNECTIVITY">
+		<munit:behavior >
+			<munit:set-event doc:name="Set Event" doc:id="3ca6ce10-263c-4879-a660-5cf40aebc6a3" >
+				<munit:attributes value="#[
+		'queryParams': {
+				'PNR': '123'
+}]" />
+			</munit:set-event>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="f1ea3eb7-4cfc-4952-a989-84ca2d630d34" processor="db:select" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="0bd6b27c-4d4a-4fb7-b4ae-63644602b0fb" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[MunitTools::getResourceAsString('db-response-not-found.json')]" mediaType="application/json" encoding="UTF-8" />
+					<munit-tools:error typeId="DB:CONNECTIVITY" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to get:\bookings:flight-booking-sapi-config" doc:id="8423716c-bc25-4635-87ce-a41e113bff83" name="get:\bookings:flight-booking-sapi-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call" doc:id="7e4eba0d-3c65-4a92-a639-d9166d40e851" processor="json-logger:logger">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Logger" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="2a59737b-9364-45d7-b45e-a71e4082c6af" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>

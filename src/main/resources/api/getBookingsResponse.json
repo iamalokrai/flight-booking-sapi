@@ -1,0 +1,14 @@
+{
+  "status": "Success",
+  "Meesage": "Booking Details found for given PNR",
+  "Details": {
+              "departure_date": "2020/12/26",
+              "plane_type": "Boeing 737",
+              "seat_number": "1A",
+              "passanger_name" : "Omkar D",
+              "price": "$200",
+              "origin": "CLE",
+              "destination": "SFO",
+              "PNR": "2df2r113232"
+  }
+}

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:circuit-breaker="http://www.mulesoft.org/schema/mule/circuit-breaker"
+	xmlns:json-logger="http://www.mulesoft.org/schema/mule/json-logger" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/json-logger http://www.mulesoft.org/schema/mule/json-logger/current/mule-json-logger.xsd
+http://www.mulesoft.org/schema/mule/circuit-breaker http://www.mulesoft.org/schema/mule/circuit-breaker/current/mule-circuit-breaker.xsd">
+	<error-handler name="flight-booking-sapi-Error_Handler" doc:id="fab02c0c-4c66-43ac-850f-7ef2734831a1" >
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="6f21a7f1-47fc-4ba0-b578-09818f340cbe" type="APIKIT:BAD_REQUEST">
+			<logger level="ERROR" doc:name="Logger" doc:id="77f86744-0e37-4d6e-9b29-78e989523467" message='#["exceptionDetails": error.description]'/>
+			<circuit-breaker:record-failure doc:name="Record failure" doc:id="67ee2e5b-70fd-466c-8ef3-5e4d8f38f1da" config-ref="Circuit_breaker_Config"/>
+			<json-logger:logger doc:name="Logger" doc:id="5b9e53ff-38d7-49df-897b-4860531d6a9a" config-ref="JSON_Logger_Config" message="EXCEPTION LOGGER"/>
+			<ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+                    <ee:message>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus"><![CDATA[400]]></ee:set-variable>
+					<ee:set-variable variableName="errorDescription"><![CDATA[error.description]]></ee:set-variable>
+                    
+</ee:variables>
+                </ee:transform>
+			<flow-ref doc:name="prepare-errore-response-sub-flow" doc:id="fe5b0054-af0a-46a2-b7d6-e2a56bb3a146" name="prepare-errore-response-sub-flow" />
+		</on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="2772b5c4-878f-4443-b649-d24b8e040b5f" type="APIKIT:METHOD_NOT_ALLOWED">
+			<logger level="ERROR" doc:name="Logger" doc:id="8ba81a5a-353a-45c8-9daf-b79647c29a39" message='#["exceptionDetails": error.description]'/>
+			<json-logger:logger doc:name="Logger" doc:id="1fbc0a7f-a233-4e6d-a26b-bca6298e6e39" config-ref="JSON_Logger_Config" message="EXCEPTION LOGGER"/>
+			<ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+                    <ee:message>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus"><![CDATA[405]]></ee:set-variable>
+					<ee:set-variable variableName="errorDescription"><![CDATA[error.description]]></ee:set-variable>
+                    
+</ee:variables>
+                </ee:transform>
+			<flow-ref doc:name="prepare-errore-response-sub-flow" doc:id="aab272b8-340b-44f4-8b0d-c8e5929f3cef" name="prepare-errore-response-sub-flow" />
+		</on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="38833160-4b62-49b3-aa7e-40fe92954ece" type="APIKIT:UNSUPPORTED_MEDIA_TYPE">
+			<logger level="INFO" doc:name="Logger" doc:id="85b99f7b-a46d-425e-8bae-a80b27c6d412" message='#["exceptionDetails": error.description]'/>
+			<json-logger:logger doc:name="Logger" doc:id="3ede3404-0b45-4cf4-8fe9-d4ed56a65e04" config-ref="JSON_Logger_Config" message="EXCEPTION LOGGER"/>
+			<ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+                    <ee:message>
+                    </ee:message>
+                    <ee:variables>
+                        <ee:set-variable variableName="httpStatus"><![CDATA[415]]></ee:set-variable>
+					<ee:set-variable variableName="errorDescription"><![CDATA[error.description]]></ee:set-variable>
+                    
+</ee:variables>
+                </ee:transform>
+			<flow-ref doc:name="prepare-errore-response-sub-flow" doc:id="94805842-0e50-467d-90c3-8c1bcf1a50df" name="prepare-errore-response-sub-flow" />
+		</on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="38d056c9-61a6-4b3b-9294-36af88235737" type="DB:CONNECTIVITY,DB:QUERY_EXECUTION,DB:RETRY_EXHAUSTED,DB:BAD_SQL_SYNTAX,EXPRESSION,STREAM_MAXIMUM_SIZE_EXCEEDED">
+			<logger level="ERROR" doc:name="Logger" doc:id="d408d4eb-3322-4b4b-bb2f-7c9c0315bd86" message='#["exceptionDetails": error.description]'/>
+			<json-logger:logger doc:name="Logger" doc:id="2a59737b-9364-45d7-b45e-a71e4082c6af" config-ref="JSON_Logger_Config" message="EXCEPTION LOGGER"/>
+			<ee:transform doc:name="Transform Message" doc:id="14519d2b-4fab-4c40-b95f-066d48ba9293">
+				<ee:message />
+				<ee:variables>
+					<ee:set-variable variableName="errorDescription"><![CDATA[%dw 2.0
+output application/json
+---
+"Database Error : Internal Server Error"]]></ee:set-variable>
+					<ee:set-variable variableName="httpStatus"><![CDATA[500]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<flow-ref doc:name="Flow Reference" doc:id="6410650f-2f59-4363-8588-da0f2cbd04df" name="prepare-errore-response-sub-flow"/>
+		</on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="edaa9640-aaec-414c-97b5-3cf9158f122a" type="ANY">
+			<logger level="ERROR" doc:name="Logger" doc:id="b427420e-6f8a-4276-9af2-7e17f2b2909c" message='#["exceptionDetails": error.description]'/>
+			<json-logger:logger doc:name="Logger" doc:id="0014aebd-e827-4ba0-adb3-b2dabaeb62f8" config-ref="JSON_Logger_Config" message="EXCEPTION LOGGER"/>
+			<ee:transform doc:name="Transform Message" doc:id="566c4ffe-4e2d-413c-bc51-e19758a54187">
+				<ee:message>
+				</ee:message>
+				<ee:variables>
+					<ee:set-variable variableName="errorDescription"><![CDATA[%dw 2.0
+output application/json
+---
+if (error.description contains("Circuit")) 
+"CIRCUIT BREAKER EXCEPTION : Circuit is Open"
+else
+"Internal Server Error"]]></ee:set-variable>
+					<ee:set-variable variableName="httpStatus"><![CDATA[500]]></ee:set-variable>
+				</ee:variables>
+			</ee:transform>
+			<flow-ref doc:name="prepare-errore-response-sub-flow" doc:id="282e8f4c-1f6f-4fdf-8761-318e213c5f1a" name="prepare-errore-response-sub-flow" />
+		</on-error-propagate>
+	</error-handler>
+	<sub-flow name="prepare-errore-response-sub-flow" doc:id="031159c6-b9cb-4748-aa9c-a692a3430901" >
+		<ee:transform doc:name="Transform Message" doc:id="97d95158-fdca-4d50-a2a4-2b784fd51ae1" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+		"Status": "Failed",
+		"Message": vars.errorDescription
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<json-logger:logger doc:name="Logger" doc:id="967433c9-a1e7-4a8a-80c8-d3eb6e0a14eb" config-ref="JSON_Logger_Config" message="EXCEPTION LOGGER"/>
+	</sub-flow>
+</mule>
