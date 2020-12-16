@@ -231,10 +231,10 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 			</http:request>
 		</munit:execution>
 		<munit:validation >
-			<munit-tools:verify-call doc:name="Verify call" doc:id="f0ca7a6f-752f-4a5e-a1b0-0cfd12777c64" processor="logger">
+			<munit-tools:verify-call doc:name="Verify call" doc:id="f0ca7a6f-752f-4a5e-a1b0-0cfd12777c64" processor="json-logger:logger">
 				<munit-tools:with-attributes >
 					<munit-tools:with-attribute whereValue="Logger" attributeName="doc:name" />
-					<munit-tools:with-attribute whereValue="77f86744-0e37-4d6e-9b29-78e989523467" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="5b9e53ff-38d7-49df-897b-4860531d6a9a" attributeName="doc:id" />
 				</munit-tools:with-attributes>
 			</munit-tools:verify-call>
 		</munit:validation>
