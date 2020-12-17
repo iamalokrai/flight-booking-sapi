@@ -35,9 +35,9 @@ output application/json
 }]]></ee:set-payload>
             </ee:message>
         </ee:transform>
-		<json-logger:logger doc:name="Success Logger" doc:id="46eca187-2584-42b5-9d05-07529ef093a3" message="DELETE SUCCESS" config-ref="JSON_Logger_Config" correlationId="#[vars.correlationId]">
+		<json-logger:logger doc:name="Success Logger" doc:id="46eca187-2584-42b5-9d05-07529ef093a3" message="DELETE SUCCESS" config-ref="JSON_Logger_Config" correlationId="#[vars.correlationId]" tracePoint="END">
 			<json-logger:content ><![CDATA[#[{
-    payload: payload
+    "PAYLOAD": payload
 }]]]></json-logger:content>
 		</json-logger:logger>
     
@@ -93,9 +93,9 @@ output application/json
 }]]></ee:set-payload>
             </ee:message>
         </ee:transform>
-				<json-logger:logger doc:name="Success Logger" doc:id="ae0f5f5f-d78a-4ce1-abff-d20f09e84c92" config-ref="JSON_Logger_Config" message="GET  SUCCESS" correlationId="#[vars.correlationId]">
+				<json-logger:logger doc:name="Success Logger" doc:id="ae0f5f5f-d78a-4ce1-abff-d20f09e84c92" config-ref="JSON_Logger_Config" message="GET  SUCCESS" correlationId="#[vars.correlationId]" tracePoint="END">
 					<json-logger:content ><![CDATA[#[{
-    payload: payload
+    "PAYLOAD": payload
 }]]]></json-logger:content>
 				</json-logger:logger>
 			</otherwise>
@@ -170,9 +170,9 @@ output application/json
 }]]></ee:set-payload>
             </ee:message>
         </ee:transform>
-		<json-logger:logger doc:name="Success Logger" doc:id="e71cc919-703f-4405-8353-3b4c8c546949" config-ref="JSON_Logger_Config" message="CREATE  SUCCESS" correlationId="#[vars.correlationId]">
+		<json-logger:logger doc:name="Success Logger" doc:id="e71cc919-703f-4405-8353-3b4c8c546949" config-ref="JSON_Logger_Config" message="CREATE  SUCCESS" correlationId="#[vars.correlationId]" tracePoint="END">
 			<json-logger:content ><![CDATA[#[{
-    payload: payload
+    "PAYLOAD": payload
 }]]]></json-logger:content>
 		</json-logger:logger>
     
@@ -251,9 +251,9 @@ output application/json
 }]]></ee:set-payload>
             </ee:message>
         </ee:transform>
-				<json-logger:logger doc:name="Success Logger" doc:id="9f4fdd5a-3915-4161-a89d-05d404bfdf9d" config-ref="JSON_Logger_Config" message="UPDATE  SUCCESS" correlationId="#[vars.correlationId]">
+				<json-logger:logger doc:name="Success Logger" doc:id="9f4fdd5a-3915-4161-a89d-05d404bfdf9d" config-ref="JSON_Logger_Config" message="UPDATE  SUCCESS" correlationId="#[vars.correlationId]" tracePoint="END">
 			<json-logger:content><![CDATA[#[{
-    payload: payload
+    "PAYLOAD": payload
 }]]]></json-logger:content>
 		</json-logger:logger>
 			</otherwise>

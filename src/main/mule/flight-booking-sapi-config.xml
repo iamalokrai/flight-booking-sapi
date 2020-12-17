@@ -29,7 +29,7 @@ http://www.mulesoft.org/schema/mule/circuit-breaker http://www.mulesoft.org/sche
 	</secure-properties:config>
 	<json-logger:config name="JSON_Logger_Config" doc:name="JSON Logger Config" doc:id="b188548d-75d1-4654-b198-e2dc1c8e2c6e" environment="${env}" applicationName="${api.name}" applicationVersion="${api.version}" contentFieldsDataMasking="passanger_name"/>
 	<configuration doc:name="Configuration" doc:id="468fbdcc-6b96-45ad-b21f-441783ea4888" defaultErrorHandler-ref="flight-booking-sapi-Error_Handler" />
-	<!-- <api-gateway:autodiscovery apiId="${autoDiscovery.id}" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="32f85ee8-8a31-409c-b5d4-229a6005dab1" flowRef="flight-booking-sapi-main" /> -->
+	<api-gateway:autodiscovery apiId="${autoDiscovery.id}" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="32f85ee8-8a31-409c-b5d4-229a6005dab1" flowRef="flight-booking-sapi-main" />
 	<circuit-breaker:config name="Circuit_breaker_Config" doc:name="Circuit-breaker Config" doc:id="5c9ab6c7-597f-4692-8550-ba766df20bd9" threshold="${cb.threshold}" timeout="${cb.timeout}" breakerName="${cb.name}" />
 	
 </mule>
