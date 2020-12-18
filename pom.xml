@@ -154,6 +154,11 @@
 
 	<repositories>
 		<repository>
+			<id>mule-ee-releases</id>
+			<name>MuleEE Releases Repository</name>
+			<url>https://repository-master.mulesoft.org/nexus/content/repositories/releases-ee/</url>
+		</repository>		
+		<repository>
 		    <id>CGExchange</id>
 		    <name>Exchange2 Repository</name>
 		    <url>https://maven.anypoint.mulesoft.com/api/v1/organizations/${project.groupId}/maven</url>
