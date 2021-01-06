@@ -162,8 +162,8 @@
 
 	<repositories>
 		<repository>
-     		   <id>jfrogrepo</id>
-     		   <name>jfrogrepo</name>
+     		   <id>jfrog</id>
+     		   <name>jfrog</name>
      		   <url>https://heisenberg.jfrog.io/artifactory/heisenberg/</url>
 	           <layout>default</layout>
   		</repository>	
