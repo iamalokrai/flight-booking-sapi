@@ -92,7 +92,7 @@
       <repository>
         <id>jfrog</id>
         <name>jfrog</name>
-        <url>https://heisenberg.jfrog.io/artifactory/heisenberg/url>
+        <url>https://heisenberg.jfrog.io/artifactory/heisenberg/</url>
        </repository>
 </distributionManagement>
 
