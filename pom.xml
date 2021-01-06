@@ -6,7 +6,7 @@
 
 	<groupId>8e660dd6-0580-40fe-86c3-b037eceaf3df</groupId>
 	<artifactId>flight-booking-sapi</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.0-${commit_id}</version>
 	<packaging>mule-application</packaging>
 	<name>flight-booking-sapi</name>
 
