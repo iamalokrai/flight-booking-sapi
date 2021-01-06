@@ -154,6 +154,11 @@
 
 	<repositories>
 		<repository>
+     		   <id>jfrogrepo</id>
+     		   <name>jfrogrepo</name>
+     		   <url>https://heisenberg.jfrog.io/artifactory/heisenberg/</url>
+	           <layout>def
+		<repository>
 			<id>mule-ee-releases</id>
 			<name>MuleEE Releases Repository</name>
 			<url>https://repository-master.mulesoft.org/nexus/content/repositories/releases-ee/</url>
